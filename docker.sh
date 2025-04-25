@@ -5,37 +5,36 @@ if ! command -v docker &>/dev/null; then
     echo "Docker इंस्टॉल नहीं है। इंस्टॉल कर रहे हैं..."
 
     # आवश्यक पैकेज इंस्टॉल करें
-    apt update
-    apt install -y apt-transport-https ca-certificates curl software-properties-common
+    sudo apt update
+    sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 
     # Docker GPG कुंजी जोड़ें
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/trusted.gpg.d/docker.asc
 
     # Docker रिपॉजिटरी जोड़ें
-      add-apt-repository \
+    sudo add-apt-repository \
       "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu \
       $(lsb_release -cs) \
       stable"
 
     # पैकेज सूची अपडेट करें
-    apt update
+    sudo apt update
 
     # Docker इंस्टॉल करें
-    apt install -y docker-ce
+    sudo apt install -y docker-ce
 
     # Docker सेवा शुरू करें और सक्षम करें
-    systemctl start docker
-    systemctl enable docker
+    sudo systemctl start docker
+    sudo systemctl enable docker
 
     # Docker इंस्टॉलेशन सत्यापित करें
     sudo docker run hello-world
 
     # उपयोगकर्ता को Docker समूह में जोड़ें (यदि आवश्यक हो)
-    usermod -aG docker $USER
+    sudo usermod -aG docker $USER
     echo "कृपया लॉगआउट करें और फिर से लॉगिन करें ताकि Docker कमांड्स बिना sudo के काम करें।"
 else
     # Docker संस्करण दिखाएं
     echo "Docker पहले से इंस्टॉल है। संस्करण:"
     docker --version
 fi
-
