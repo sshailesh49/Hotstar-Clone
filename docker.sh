@@ -9,11 +9,11 @@ if ! command -v docker &>/dev/null; then
     sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 
     # Docker GPG कुंजी जोड़ें
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo tee /etc/apt/trusted.gpg.d/docker.asc
 
     # Docker रिपॉजिटरी जोड़ें
     sudo add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+      "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/docker.asc] https://download.docker.com/linux/ubuntu \
       $(lsb_release -cs) \
       stable"
 
@@ -38,3 +38,4 @@ else
     echo "Docker पहले से इंस्टॉल है। संस्करण:"
     docker --version
 fi
+
