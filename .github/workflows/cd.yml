@@ -1,0 +1,48 @@
+name: CD - Deploy
+
+on:
+  workflow_dispatch:   # Manual trigger (can also be repository_dispatch or on: workflow_run)
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      # Clean workspace → GitHub provides a fresh one each run
+      - name: Checkout repo
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GIT_TOKEN }} # personal access token or PAT with repo write access
+      - name: Download image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+
+      - name: Read image reference
+        id: image
+        run: |
+          IMAGE=$(cat image.txt)
+          echo "Using image: $IMAGE"
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+
+      - name: Update Kubernetes manifests
+        run: |
+          cd Kubernetes
+          sed -i "s|shailesh49/hotstar:[^\"']*|${{ env.IMAGE }}|g" deployment.yml
+
+
+      - name: Commit & Push changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          echo "Checking repository status: "
+          git status
+
+          echo "Adding changes to git: "
+          git add .
+
+          echo "Committing changes: "
+          git commit -m "Updated deployment image to ${{ env.IMAGE }}" || echo "No changes to commit"
+
+          echo "Pushing changes to GitHub: "
+          git push origin main
