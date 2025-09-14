@@ -1,7 +1,10 @@
 name: CD - Deploy
 
 on:
-  workflow_dispatch:   # Manual trigger (can also be repository_dispatch or on: workflow_run)
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
 
 jobs:
   deploy:
