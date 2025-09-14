@@ -199,6 +199,19 @@ jobs:
       #       reports/trivy-*.json
       #       reports/docker-scout-*.json
 
+  # -------- Optional: Trigger CD Pipeline --------
+ 
+      - name: Trigger CD Workflow
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: "CD - Deploy"
+          ref: main
+          token: ${{ secrets.PAT_TOKEN1 }}
+          inputs: |
+            {
+              "IMAGE_NAME": "${{ env.IMAGE }}"
+            }
+
    
       
 
