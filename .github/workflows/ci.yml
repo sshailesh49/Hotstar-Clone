@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths-ignore:
-      - 'Kubernetes/**'
+      - 'K8S/**'
   pull_request:
     branches:
       - main
