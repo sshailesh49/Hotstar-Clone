@@ -25,7 +25,7 @@ jobs:
       - name: Update Kubernetes manifests
         run: |
           cd K8S
-          sed -i "s|shailesh49/hotstar:[^\"']*|${{ env.IMAGE_NAME }}|g" deployment.yml
+          sed -i "s|shailesh49/hotstar:[^\"']*|${{ github.event.inputs.IMAGE_NAME }}|g" deployment.yml
 
 
       - name: Commit & Push changes
