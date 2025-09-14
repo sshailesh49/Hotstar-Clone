@@ -1,9 +1,11 @@
 name: CD - Deploy
 
 on:
-  workflow_run:
-    workflows: ["CI Pipeline"]
-    types: [completed]
+  workflow_dispatch:
+    inputs:
+      IMAGE_NAME:
+        description: "Docker image to deploy"
+        required: true
 
 jobs:
   deploy:
@@ -14,22 +16,16 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GIT_TOKEN }} # personal access token or PAT with repo write access
-      - name: Download image artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: docker-image
+      
 
-      - name: Read image reference
-        id: image
+      - name: Verify Docker Image Tags
         run: |
-          IMAGE=$(cat image.txt)
-          echo "Using image: $IMAGE"
-          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
-
+          echo "DOCKER_IMAGES: ${{ github.event.inputs.IMAGE_NAME }}"
+             
       - name: Update Kubernetes manifests
         run: |
           cd Kubernetes
-          sed -i "s|shailesh49/hotstar:[^\"']*|${{ env.IMAGE }}|g" deployment.yml
+          sed -i "s|shailesh49/hotstar:[^\"']*|${{ env.IMAGE_NAME }}|g" deployment.yml
 
 
       - name: Commit & Push changes
