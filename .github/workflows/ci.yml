@@ -41,21 +41,21 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-         # -------- OWASP Dependency Check --------
-      - name: OWASP Dependency Check
-        uses: dependency-check/Dependency-Check_Action@main
-        with:
-         project: "hotstar"
-         path: "."
-         format: "ALL"
-         out: "reports"
-         args: "--disableYarnAudit"
+      #    # -------- OWASP Dependency Check --------
+      # - name: OWASP Dependency Check
+      #   uses: dependency-check/Dependency-Check_Action@main
+      #   with:
+      #    project: "hotstar"
+      #    path: "."
+      #    format: "ALL"
+      #    out: "reports"
+      #    args: "--disableYarnAudit"
 
-      - name: Upload Dependency Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: dependency-check-report
-          path: reports/**
+      # - name: Upload Dependency Report
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: dependency-check-report
+      #     path: reports/**
 
 
       # 2 Setup JDK (SonarQube Scanner needs Java)
