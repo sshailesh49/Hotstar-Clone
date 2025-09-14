@@ -16,8 +16,8 @@ permissions:
 
 
 env:
-  IMAGE_TAG: ${GITHUB_SHA}
-  IMAGE: shailesh49/hotstar:${{env.IMAGE_TAG}}
+  IMAGE_TAG: ${{ github.sha }}
+  IMAGE: shailesh49/hotstar:${{ github.sha }}
   DOCKER_SCOUT_CACHE_DIR: /tmp/docker-scout-cache
   SCOUT_BIN: ${{ github.workspace }}/.scout-bin
 
@@ -82,9 +82,21 @@ jobs:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       #     SONAR_HOST_URL: https://sonar-server
 
-      # Build Docker Images 
+      # Build Docker Images  with env
       - name: Build Docker Image
-        run: docker build -t $IMAGE .
+        run:  docker build -t $IMAGE .
+      # # Build Docker Images  without  env create 
+      # - name: Build & Push Docker Image
+      #   run: |
+      #     IMAGE_TAG=${GITHUB_SHA}
+      #     IMAGE=shailesh49/netflix:$IMAGE_TAG
+
+      #     echo "Building and pushing $IMAGE"
+      #     docker build -t $IMAGE .
+      #     docker push $IMAGE
+
+      #     echo $IMAGE > image.txt
+        
        #  Setup Trivy
       - name: Install Trivy
         uses: aquasecurity/setup-trivy@v0.2.4
