@@ -1,12 +1,42 @@
-apiVersion: apps/v1
-kind: Deployment
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: hotstar-deployment
+# spec:
+#   replicas: 4  # Number of desired replicas
+#   selector:
+#     matchLabels:
+#       app: hotstar
+#   template:
+#     metadata:
+#       labels:
+#         app: hotstar
+#     spec:
+#       containers:
+#       - name: hotstar
+#         image: shailesh49/hotstar:bf1a93f96f594146f98f5727eb5a273aec7d28ca
+#         ports:
+#         - containerPort: 3000  # Port your application listens on
+
+
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
 metadata:
-  name: hotstar-deployment
+  name: hotstar-rollout
+  namespace: default
 spec:
-  replicas: 4  # Number of desired replicas
+  replicas: 4
   selector:
     matchLabels:
       app: hotstar
+  strategy:
+    canary:
+      steps:
+        - setWeight: 25        # पहले 25% traffic नए version को जाएगा
+        - pause: {duration: 30s}
+        - setWeight: 50        # अब 50% traffic नए version को जाएगा
+        - pause: {duration: 30s}
+        - setWeight: 100       # अंत में 100% traffic नए version को
   template:
     metadata:
       labels:
@@ -16,4 +46,4 @@ spec:
       - name: hotstar
         image: shailesh49/hotstar:bf1a93f96f594146f98f5727eb5a273aec7d28ca
         ports:
-        - containerPort: 3000  # Port your application listens on
+        - containerPort: 3000
