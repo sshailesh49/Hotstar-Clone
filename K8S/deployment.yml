@@ -14,7 +14,7 @@
 #     spec:
 #       containers:
 #       - name: hotstar
-#         image: shailesh49/hotstar:f9a1b86660053ac3cbfdb92b583771224a0f9048
+#         image: shailesh49/hotstar:1afefe171fdfbb267cdf609e6fe61d663b4d937d
 #         ports:
 #         - containerPort: 3000  # Port your application listens on
 
@@ -44,6 +44,6 @@ spec:
     spec:
       containers:
       - name: hotstar
-        image: shailesh49/hotstar:f9a1b86660053ac3cbfdb92b583771224a0f9048
+        image: shailesh49/hotstar:1afefe171fdfbb267cdf609e6fe61d663b4d937d
         ports:
         - containerPort: 3000
