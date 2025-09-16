@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: hotstar
-          image: shailesh49/hotstar:latest
+          image: shailesh49/hotstar:4c01ab1e822de577e0329dce41b457e488c8710f
           ports:
             - containerPort: 3000
           readinessProbe:            
