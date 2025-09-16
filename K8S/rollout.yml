@@ -14,9 +14,9 @@ spec:
           stableIngress: hotstar-ingress
       steps:
         - setWeight: 20
-        - pause: { duration: 30s }
+        - pause: { duration: 40s }
         - setWeight: 50
-        - pause: { duration: 30s }
+        - pause: { duration: 40s }
         - setWeight: 100
   selector:
     matchLabels:
@@ -28,9 +28,17 @@ spec:
     spec:
       containers:
         - name: hotstar
-          image: shailesh49/hotstar:18b843f27dc380606d66aea6fcb71bf3c3744eb7
+          image: shailesh49/hotstar:latest
           ports:
             - containerPort: 3000
+          readinessProbe:            
+            httpGet:
+              path: /               # Your app’s health path
+              port: 3000
+            initialDelaySeconds: 15  # Wait before first check
+            periodSeconds: 20       # Check every 10s
+            failureThreshold: 3     # After 3 failed checks → pod marked Unready
+
 ---
 apiVersion: v1
 kind: Service
